@@ -34,8 +34,8 @@ export AWS_ACCESS_KEY_ID=$(jq -r '.Credentials.AccessKeyId' <<< "$AWS_CREDENTIAL
 export AWS_SECRET_ACCESS_KEY=$(jq -r '.Credentials.SecretAccessKey' <<< "$AWS_CREDENTIALS");
 export AWS_SESSION_TOKEN=$(jq -r '.Credentials.SessionToken' <<< "$AWS_CREDENTIALS");
 
-echo "export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID" | tee -a ~/.bashrc
-echo "export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY" | tee -a ~/.bashrc
-echo "export AWS_SESSION_TOKEN=$AWS_SESSION_TOKEN" | tee -a ~/.bashrc
+echo "export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID" | tee -a ~/.bashrc | tee -a ~/.profile
+echo "export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY" | tee -a ~/.bashrc | tee -a ~/.profile
+echo "export AWS_SESSION_TOKEN=$AWS_SESSION_TOKEN" | tee -a ~/.bashrc | tee -a ~/.profile
 
 echo "Environment set. Session expiring on $(jq -r '.Credentials.Expiration' <<< "$AWS_CREDENTIALS")";
