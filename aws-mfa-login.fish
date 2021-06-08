@@ -28,12 +28,16 @@ function aws-mfa-login -d "Performs a login to AWS with MFA";
   read AWS_MFA_CODE;
 
   set AWS_CREDENTIALS (aws sts get-session-token --serial-number $AWS_MFA_ARN --token-code $AWS_MFA_CODE --profile default);
-  echo "Received credentials... Setting them to the environment."
 
-  # Set the environment
-  set -Ux AWS_ACCESS_KEY_ID (echo "$AWS_CREDENTIALS" | jq -r '.Credentials.AccessKeyId');
-  set -Ux AWS_SECRET_ACCESS_KEY (echo "$AWS_CREDENTIALS" | jq -r '.Credentials.SecretAccessKey');
-  set -Ux AWS_SESSION_TOKEN (echo "$AWS_CREDENTIALS" | jq -r '.Credentials.SessionToken');
-  echo "Environment set. Session expiring on "(echo "$AWS_CREDENTIALS" | jq -r '.Credentials.Expiration');
-
+  if test $status -eq 0
+    # Set the environment
+    echo "Environment set. Session expiring on "(echo "$AWS_CREDENTIALS" | jq -r '.Credentials.Expiration');
+    echo "Received credentials... Setting them to the environment."
+    
+    set -Ux AWS_ACCESS_KEY_ID (echo "$AWS_CREDENTIALS" | jq -r '.Credentials.AccessKeyId');
+    set -Ux AWS_SECRET_ACCESS_KEY (echo "$AWS_CREDENTIALS" | jq -r '.Credentials.SecretAccessKey');
+    set -Ux AWS_SESSION_TOKEN (echo "$AWS_CREDENTIALS" | jq -r '.Credentials.SessionToken');
+  else
+    echo "Something went wrong while setting the credentials..."
+  end
 end;
