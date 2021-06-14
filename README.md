@@ -18,3 +18,9 @@ Just copy the fish script into your `functions` folder.
 cp *.fish ~/.config/fish/functions/
 ```
 
+Afther that the commands are available as:
+
+```fish
+aws-mfa-login
+aws-mfa-logout
+```
